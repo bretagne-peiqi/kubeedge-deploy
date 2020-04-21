@@ -17,6 +17,7 @@ spec:
         k8s-app: kubeedge
         kubeedge: edgecontroller
     spec:
+      hostNetwork: true
       initContainers:
       - name: kubeconfig
         image: alpine:3.9

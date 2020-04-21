@@ -30,7 +30,7 @@ data:
             auth-info-files-path: /var/IEF/secret
             placement-url: https://10.154.193.32:7444/v1/placement_external/message_queue
             project-id: e632aba927ea4ac2b575ec1603d56f10
-            node-id: 192.168.1.185
+            node-id: 192.168.1.182
     edged:
         register-node-namespace: default
         hostname-override: edgenode1
