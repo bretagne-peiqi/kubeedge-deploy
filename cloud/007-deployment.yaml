@@ -1,0 +1,57 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    k8s-app: kubeedge
+    kubeedge: edgecontroller
+  name: edgecontroller
+  namespace: kubeedge
+spec:
+  selector:
+    matchLabels:
+      k8s-app: kubeedge
+      kubeedge: edgecontroller
+  template:
+    metadata:
+      labels:
+        k8s-app: kubeedge
+        kubeedge: edgecontroller
+    spec:
+      hostNetwork: true
+      containers:
+      - name: edgecontroller
+        image: registry.cn-hangzhou.aliyuncs.com/hacker-space/cmsr:v1.2
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 10000
+          name: cloudhub
+          protocol: TCP
+        resources:
+          limits:
+            cpu: 200m
+            memory: 1Gi
+          requests:
+            cpu: 100m
+            memory: 512Mi
+        volumeMounts:
+        - name: conf
+          mountPath: /etc/kubeedge/config
+        - name: certs
+          mountPath: /etc/kubeedge
+      restartPolicy: Always
+      serviceAccount: edgecontroller
+      serviceAccountName: edgecontroller
+      volumes:
+      - name: conf
+        configMap:
+          name: edgecontroller
+      - name: certs
+        secret:
+          secretName: edgecontroller
+          items:
+          - key: edge.crt
+            path: certs/edge.crt
+          - key: edge.key
+            path: certs/edge.key
+          - key: rootCA.crt
+            path: ca/rootCA.crt
